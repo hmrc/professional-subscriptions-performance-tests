@@ -1,4 +1,4 @@
-import EERequests._
+import PSUBRequests._
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.core.structure.{ChainBuilder, ScenarioBuilder}
@@ -10,13 +10,13 @@ class PSUBSimulation extends Simulation {
   private def waitABit: ChainBuilder = pause(minPause, maxPause)
 
   private val psubAddAProfessionalSubscription: ScenarioBuilder =
-    scenario("Previous Year")
+    scenario("Happy Path")
       .exec(
         getAuthLoginStub, waitABit,
-        postAuthLoginStub("LL111111B"), waitABit,
+        postAuthLoginStub("AB216913B"), waitABit,
 
         getWhichTaxYear, waitABit,
-        postgetWhichTaxYear, waitABit,
+        postWhichTaxYear, waitABit,
 
         getAlreadyInTaxCode, waitABit,
         postAlreadyInTaxCode, waitABit,
@@ -25,13 +25,12 @@ class PSUBSimulation extends Simulation {
         postAmountsYouNeedToChange, waitABit,
 
         getSummarySubscriptions, waitABit,
-        postgetSummarySubscriptions, waitABit,
 
         getWhicSubscription, waitABit,
         postWhicSubscription, waitABit,
 
-        getAlreadyClaimingDifferentAmounts, waitABit,
-        postAlreadyClaimingDifferentAmounts, waitABit,
+        getSubscriptionAmount, waitABit,
+        postSubscriptionAmount, waitABit,
 
         getEmployerContribution, waitABit,
         postEmployerContribution, waitABit,
@@ -57,17 +56,12 @@ class PSUBSimulation extends Simulation {
 
   if (runSmokeTest) {
     setUp(
-      eePreviousYearRequests.inject(atOnceUsers(1)),
-      eeCurrentYearRequests.inject(atOnceUsers(1)),
-      eeCurrentPreviousYearRequests.inject(atOnceUsers(1)),
-      eeStopped.inject(atOnceUsers(1))
+      psubAddAProfessionalSubscription.inject(atOnceUsers(1))
+
     ).protocols(http)
   } else {
     setUp(
-      eePreviousYearRequests.inject(rampUsersPerSec(1) to totalUsers during rampUpTime),
-      eeCurrentYearRequests.inject(rampUsersPerSec(1) to totalUsers during rampUpTime),
-      eeCurrentPreviousYearRequests.inject(rampUsersPerSec(1) to totalUsers during rampUpTime),
-      eeStopped.inject(rampUsersPerSec(1) to totalUsers during rampUpTime)
+      psubAddAProfessionalSubscription.inject(rampUsersPerSec(1) to totalUsers during rampUpTime)
     ).protocols(http).throttle(
       reachRps(tps) in rampUpTime,
       holdFor(constantRateTime),

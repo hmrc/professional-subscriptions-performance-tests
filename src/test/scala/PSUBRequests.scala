@@ -30,49 +30,46 @@ object PSUBRequests extends CsrfHelper {
 
   val getWhichTaxYear: ChainBuilder =
     get("/which-tax-year")
+
   val postWhichTaxYear: ChainBuilder =
-    post("/which-tax-year", Map("value" -> "currentYear"), "/amounts-already-in-tax-code")
+    post("/which-tax-year", Map("value[0]" -> "currentYear"), "/amounts-already-in-tax-code")
 
   val getAlreadyInTaxCode: ChainBuilder =
     get("/amounts-already-in-tax-code")
-  val postAlreadyInTaxCase: ChainBuilder =
+  val postAlreadyInTaxCode: ChainBuilder =
     post("/amounts-already-in-tax-code", Map("value" -> "false"), "/amounts-you-need-to-change")
 
   val getAmountsYouNeedToChange: ChainBuilder =
     get("/amounts-you-need-to-change")
   val postAmountsYouNeedToChange: ChainBuilder =
-    post("/amounts-you-need-to-change", Map("value" -> "currentYear"), "/summary-subscriptions")
+    post("/amounts-you-need-to-change", Map("value[0]" -> "currentYear"), "/summary-subscriptions")
 
   val getSummarySubscriptions: ChainBuilder =
     get("/summary-subscriptions", false)
-  val postSummarySubscriptions: ChainBuilder =
-    post("/summary-subscriptions", "/which-subscription-are-you-claiming-for/2019/0")
 
   val getWhicSubscription: ChainBuilder =
     get("/which-subscription-are-you-claiming-for/2019/0")
-  def postWhicSubscription(formData: Map[String, String], redirect: String), subscription: String): ChainBuilder =
-    .formParam("subscription", "")
-    post("/which-subscription-are-you-claiming-for/2019/0", formData, redirect)
 
-  val getAlreadyClaimingDifferentAmounts: ChainBuilder =
+  val postWhicSubscription: ChainBuilder =
+    post("/which-subscription-are-you-claiming-for/2019/0", Map("subscription" -> "100 Women in Finance Association"), "/subscription-amount/2019/0")
+
+
+  val getSubscriptionAmount: ChainBuilder =
     get("/subscription-amount/2019/0")
-  def postAlreadyClaimingDifferentAmounts(formData: Map[String, String], redirect: String), amount: String): ChainBuilder =
-  .formParam("value", "")
-  post("/subscription-amount/2019/0", formData, redirect)
 
-  val getEmployerContribution: ChainBuilder =
+  val postSubscriptionAmount: ChainBuilder =
+    post("/subscription-amount/2019/0", Map("value" -> "100"), "/employer-contribution/2019/0")
+
+
+    val getEmployerContribution: ChainBuilder =
     get("/employer-contribution/2019/0")
   val postEmployerContribution: ChainBuilder =
     post("/employer-contribution/2019/0", Map("value" -> "true"), "/expenses-employer-paid/2019/0")
 
   val getExpensesEmployerPaid: ChainBuilder =
-    get("//expenses-employer-paid/2019/0")
-  def postExpensesEmployerPaid(formData: Map[String, String], redirect: String), subscription: String): ChainBuilder =
-  .formParam("value", "")
-  post("//expenses-employer-paid/2019/0", formData, redirect)
-
-  val getSummarySubscriptions: ChainBuilder =
-    get("/summary-subscriptions", false)
+    get("/expenses-employer-paid/2019/0")
+  val postExpensesEmployerPaid: ChainBuilder =
+    post("/expenses-employer-paid/2019/0", Map("value" -> "50"), "/summary-subscriptions")
 
 
   val getYourEmployer: ChainBuilder =
