@@ -1,7 +1,16 @@
 
 # professional-subscriptions-performance-tests
 
-This is a placeholder README.md for a new repository
+Professional Subscriptions Performance Tests
+
+Local testing -
+
+ Smoke - sbt -Dperftest.runSmokeTest=true test
+ 
+ It might be best running the smoke tests before your full suite.
+ These tests only use one user to check the journey is complete and working.
+ 
+ sbt test - runs the full journey.
 
 ### License
 
