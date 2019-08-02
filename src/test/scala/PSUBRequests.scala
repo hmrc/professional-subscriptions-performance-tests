@@ -30,62 +30,48 @@ object PSUBRequests extends CsrfHelper {
 
   val getWhichTaxYear: ChainBuilder =
     get("/which-tax-year")
-
   val postWhichTaxYear: ChainBuilder =
     post("/which-tax-year", Map("value[0]" -> "currentYear"), "/amounts-already-in-tax-code")
-
   val getAlreadyInTaxCode: ChainBuilder =
     get("/amounts-already-in-tax-code")
   val postAlreadyInTaxCode: ChainBuilder =
-    post("/amounts-already-in-tax-code", Map("value" -> "false"), "/amounts-you-need-to-change")
-
-  val getAmountsYouNeedToChange: ChainBuilder =
-    get("/amounts-you-need-to-change")
-  val postAmountsYouNeedToChange: ChainBuilder =
-    post("/amounts-you-need-to-change", Map("value[0]" -> "currentYear"), "/summary-subscriptions")
-
+    post("/amounts-already-in-tax-code", Map("value" -> "true"), "/re-enter-amounts")
+  val getReEnterAmounts: ChainBuilder =
+    get("/re-enter-amounts")
+  val postReEnterAmounts: ChainBuilder =
+    post("/re-enter-amounts", Map("value" -> "true"), "/summary-subscriptions")
   val getSummarySubscriptions: ChainBuilder =
     get("/summary-subscriptions", false)
-
   val getWhicSubscription: ChainBuilder =
     get("/which-subscription-are-you-claiming-for/2019/0")
-
   val postWhicSubscription: ChainBuilder =
     post("/which-subscription-are-you-claiming-for/2019/0", Map("subscription" -> "100 Women in Finance Association"), "/subscription-amount/2019/0")
-
-
   val getSubscriptionAmount: ChainBuilder =
     get("/subscription-amount/2019/0")
-
   val postSubscriptionAmount: ChainBuilder =
     post("/subscription-amount/2019/0", Map("value" -> "100"), "/employer-contribution/2019/0")
-
-
     val getEmployerContribution: ChainBuilder =
     get("/employer-contribution/2019/0")
   val postEmployerContribution: ChainBuilder =
     post("/employer-contribution/2019/0", Map("value" -> "true"), "/expenses-employer-paid/2019/0")
-
   val getExpensesEmployerPaid: ChainBuilder =
     get("/expenses-employer-paid/2019/0")
   val postExpensesEmployerPaid: ChainBuilder =
     post("/expenses-employer-paid/2019/0", Map("value" -> "50"), "/summary-subscriptions")
-
-
   val getYourEmployer: ChainBuilder =
     get("/your-employer")
   val postYourEmployer: ChainBuilder =
     post("/your-employer", Map("value" -> "true"), "/your-address")
-
   val getYourAddress: ChainBuilder =
     get("/your-address")
   val postYourAddress: ChainBuilder =
     post("/your-address", Map("value" -> "true"), "/check-your-answers")
-
   val getCYA: ChainBuilder =
     get("/check-your-answers", false)
   def postCYA(redirect: String): ChainBuilder =
     post("/check-your-answers", Map("" -> ""), redirect)
+
+
 
   private def get(path: String, expectCsrfToken: Boolean = true): ChainBuilder =
     if (expectCsrfToken) {

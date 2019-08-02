@@ -21,8 +21,8 @@ class PSUBSimulation extends Simulation {
         getAlreadyInTaxCode, waitABit,
         postAlreadyInTaxCode, waitABit,
 
-        getAmountsYouNeedToChange, waitABit,
-        postAmountsYouNeedToChange, waitABit,
+        getReEnterAmounts, waitABit,
+        postReEnterAmounts, waitABit,
 
         getSummarySubscriptions, waitABit,
 
@@ -48,7 +48,7 @@ class PSUBSimulation extends Simulation {
         postYourAddress, waitABit,
         getCYA, waitABit,
 
-        postCYA("/confirmation")
+        postCYA("/confirmation-current-year")
       )
 
 
