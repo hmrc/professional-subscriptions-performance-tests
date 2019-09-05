@@ -63,9 +63,7 @@ object PSUBRequests extends CsrfHelper {
   val getYourEmployer: ChainBuilder =
     get("/your-employer")
   val postYourEmployer: ChainBuilder =
-    post("/your-employer", Map("value" -> "true"), "/your-address")
-  val getYourAddress: ChainBuilder =
-    get("/your-address")
+    post("/your-employer", Map("value" -> "true"), "/how-you-will-get-your-expenses")
   val postYourAddress: ChainBuilder =
     post("/your-address", Map("value" -> "true"), "/check-your-answers")
   val getHowYouWillGetYourExpensesPage: ChainBuilder =
