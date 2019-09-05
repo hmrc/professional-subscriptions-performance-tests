@@ -40,15 +40,12 @@ class PSUBSimulation extends Simulation {
 
         getSummarySubscriptions, waitABit,
 
+        getCYA, waitABit,
+
         getYourEmployer, waitABit,
         postYourEmployer, waitABit,
 
-
-        getYourAddress, waitABit,
-        postYourAddress, waitABit,
-        getCYA, waitABit,
-
-        postCYA("/confirmation-current-year")
+        getHowYouWillGetYourExpensesPage, waitABit
       )
 
 
