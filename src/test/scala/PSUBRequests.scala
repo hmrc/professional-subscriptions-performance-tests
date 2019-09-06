@@ -71,6 +71,14 @@ object PSUBRequests extends CsrfHelper {
   val getSubmission: ChainBuilder =
     get("submission")
 
+  val getYourAddress: ChainBuilder = {
+    exec(
+      http("[GET] - /your-address")
+        .get(s"$serviceUrl/your-address")
+        .disableFollowRedirect
+        .check(status.is(303))
+    )
+  }
 
   private def get(path: String, expectCsrfToken: Boolean = true): ChainBuilder =
     if (expectCsrfToken) {
