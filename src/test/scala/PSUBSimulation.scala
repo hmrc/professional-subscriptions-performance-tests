@@ -40,6 +40,8 @@ class PSUBSimulation extends Simulation {
 
         getSummarySubscriptions, waitABit,
 
+        getYourAddress, waitABit,
+
         getCYA, waitABit,
 
         getYourEmployer, waitABit,
