@@ -3,6 +3,14 @@
 
 Professional Subscriptions Performance Tests
 
+## Start dependencies via Service Manager
+
+To start all dependencies and services for professional subscriptions, use one of the following commands:
+```
+sm --start EE_ALL -r
+sm --start EE_DEP -r (starts only dependencies).
+```
+
 Local testing -
 
  Smoke - sbt -Dperftest.runSmokeTest=true test
