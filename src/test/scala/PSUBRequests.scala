@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
@@ -6,6 +22,7 @@ object PSUBRequests extends CsrfHelper {
 
   val serviceUrl: String = Config.baseUrl + "/professional-subscriptions"
 
+  val serviceUrl2: String = Config.baseUrl + "/professional-subscriptions/which-tax-year"
   val getAuthLoginStub: ChainBuilder =
     exec(
       http("[GET] - /auth-login-stub/gg-sign-in")
@@ -43,21 +60,21 @@ object PSUBRequests extends CsrfHelper {
   val getSummarySubscriptions: ChainBuilder =
     get("/summary-subscriptions", false)
   val getWhicSubscription: ChainBuilder =
-    get("/which-subscription-are-you-claiming-for/2019/0")
+    get("/which-subscription-are-you-claiming-for/2023/0")
   val postWhicSubscription: ChainBuilder =
-    post("/which-subscription-are-you-claiming-for/2019/0", Map("subscription" -> "100 Women in Finance Association"), "/subscription-amount/2019/0")
+    post("/which-subscription-are-you-claiming-for/2023/0", Map("subscription" -> "100 Women in Finance Association"), "/subscription-amount/2023/0")
   val getSubscriptionAmount: ChainBuilder =
-    get("/subscription-amount/2019/0")
+    get("/subscription-amount/2023/0")
   val postSubscriptionAmount: ChainBuilder =
-    post("/subscription-amount/2019/0", Map("value" -> "100"), "/employer-contribution/2019/0")
+    post("/subscription-amount/2023/0", Map("value" -> "100"), "/employer-contribution/2023/0")
   val getEmployerContribution: ChainBuilder =
-    get("/employer-contribution/2019/0")
+    get("/employer-contribution/2023/0")
   val postEmployerContribution: ChainBuilder =
-    post("/employer-contribution/2019/0", Map("value" -> "true"), "/expenses-employer-paid/2019/0")
+    post("/employer-contribution/2023/0", Map("value" -> "true"), "/expenses-employer-paid/2023/0")
   val getExpensesEmployerPaid: ChainBuilder =
-    get("/expenses-employer-paid/2019/0")
+    get("/expenses-employer-paid/2023/0")
   val postExpensesEmployerPaid: ChainBuilder =
-    post("/expenses-employer-paid/2019/0", Map("value" -> "50"), "/summary-subscriptions")
+    post("/expenses-employer-paid/2023/0", Map("value" -> "50"), "/summary-subscriptions")
   val getCYA: ChainBuilder =
     get("/check-your-answers", false)
   val getYourEmployer: ChainBuilder =
@@ -67,7 +84,7 @@ object PSUBRequests extends CsrfHelper {
   val postYourAddress: ChainBuilder =
     post("/your-address", Map("value" -> "true"), "/check-your-answers")
   val getHowYouWillGetYourExpensesPage: ChainBuilder =
-    get("/how-you-will-get-your-expenses")
+    get("/how-you-will-get-your-expenses", false)
   val getSubmission: ChainBuilder =
     get("submission")
 

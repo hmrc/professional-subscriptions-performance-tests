@@ -3,7 +3,8 @@ import sbt._
 object Dependencies {
   
   val compile: Seq[ModuleID] = Seq(
-    "io.gatling.highcharts"   %  "gatling-charts-highcharts" % "2.3.1",
-    "io.gatling"              %  "gatling-test-framework"    % "2.3.1"
+    "uk.gov.hmrc"             %% "performance-test-runner"   % "4.9.0" % Test,
+    "io.gatling.highcharts"   %  "gatling-charts-highcharts" % "3.4.2" % Test,
+    "io.gatling"              %  "gatling-test-framework"    % "3.4.2" % Test
   )
 }

@@ -11,15 +11,32 @@ sm --start EE_ALL -r
 sm --start EE_DEP -r (starts only dependencies).
 ```
 
-Local testing -
+### Running locally
 
- Smoke - sbt -Dperftest.runSmokeTest=true test
- 
- It might be best running the smoke tests before your full suite.
- These tests only use one user to check the journey is complete and working.
- 
- sbt test - runs the full journey.
+To run the smoke test
+```
+sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
+```
+It might be best running the smoke tests before your full suite.
+These tests only use one user to check the journey is complete and working.
 
+To run the full test
+```
+sbt -DrunLocal=true gatling:test
+```
+
+### Running in Staging
+To run the smoke test
+```
+sbt -Dperftest.runSmokeTest=true gatling:test
+```
+It might be best running the smoke tests before your full suite.
+These tests only use one user to check the journey is complete and working.
+
+To run the full test
+```
+sbt gatling:test
+```
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
