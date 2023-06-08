@@ -15,114 +15,106 @@
  */
 
 import io.gatling.core.Predef._
-import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
+import io.gatling.http.request.builder.HttpRequestBuilder
+import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
-object PSUBRequests extends CsrfHelper {
+object PSUBRequests extends CsrfHelper with ServicesConfiguration {
 
-  val serviceUrl: String = Config.baseUrl + "/professional-subscriptions"
+  val serviceUrl: String = baseUrlFor("professional-subscriptions-frontend")
+  val authUrl: String = baseUrlFor("auth-login-stub")
 
-  val serviceUrl2: String = Config.baseUrl + "/professional-subscriptions/which-tax-year"
-  val getAuthLoginStub: ChainBuilder =
-    exec(
+  val getAuthLoginStub: HttpRequestBuilder =
       http("[GET] - /auth-login-stub/gg-sign-in")
-        .get(Config.authUrl)
+        .get(s"$authUrl/auth-login-stub/gg-sign-in")
         .check(status.is(200))
-    )
 
-  def postAuthLoginStub(nino: String): ChainBuilder =
-    exec(
+  def postAuthLoginStub(nino: String): HttpRequestBuilder =
       http("[POST] - /auth-login-stub/gg-sign-in")
-        .post(Config.authUrl)
+        .post(s"$authUrl/auth-login-stub/gg-sign-in")
         .formParam("authorityId", "")
         .formParam("gatewayToken", "")
-        .formParam("redirectionUrl", serviceUrl)
+        .formParam("redirectionUrl", s"$serviceUrl/professional-subscriptions")
         .formParam("credentialStrength", "weak")
         .formParam("confidenceLevel", "200")
         .formParam("affinityGroup", "Individual")
         .formParam("nino", nino)
-        .check(status.is(200))
-    )
+        .check(status.is(303))
 
-
-  val getWhichTaxYear: ChainBuilder =
+  val getIndex: HttpRequestBuilder =
+    http("[GET] - /professional-subscriptions")
+        .get(s"$serviceUrl/professional-subscriptions")
+        .check(status.is(303))
+  val getWhichTaxYear: HttpRequestBuilder =
     get("/which-tax-year")
-  val postWhichTaxYear: ChainBuilder =
+  val postWhichTaxYear: HttpRequestBuilder =
     post("/which-tax-year", Map("value[0]" -> "currentYear"), "/amounts-already-in-tax-code")
-  val getAlreadyInTaxCode: ChainBuilder =
+  val getAlreadyInTaxCode: HttpRequestBuilder =
     get("/amounts-already-in-tax-code")
-  val postAlreadyInTaxCode: ChainBuilder =
+  val postAlreadyInTaxCode: HttpRequestBuilder =
     post("/amounts-already-in-tax-code", Map("value" -> "true"), "/re-enter-amounts")
-  val getReEnterAmounts: ChainBuilder =
+  val getReEnterAmounts: HttpRequestBuilder =
     get("/re-enter-amounts")
-  val postReEnterAmounts: ChainBuilder =
+  val postReEnterAmounts: HttpRequestBuilder =
     post("/re-enter-amounts", Map("value" -> "true"), "/summary-subscriptions")
-  val getSummarySubscriptions: ChainBuilder =
+  val getSummarySubscriptions: HttpRequestBuilder =
     get("/summary-subscriptions", false)
-  val getWhicSubscription: ChainBuilder =
+  val getWhicSubscription: HttpRequestBuilder =
     get("/which-subscription-are-you-claiming-for/2023/0")
-  val postWhicSubscription: ChainBuilder =
+  val postWhicSubscription: HttpRequestBuilder =
     post("/which-subscription-are-you-claiming-for/2023/0", Map("subscription" -> "100 Women in Finance Association"), "/subscription-amount/2023/0")
-  val getSubscriptionAmount: ChainBuilder =
+  val getSubscriptionAmount: HttpRequestBuilder =
     get("/subscription-amount/2023/0")
-  val postSubscriptionAmount: ChainBuilder =
+  val postSubscriptionAmount: HttpRequestBuilder =
     post("/subscription-amount/2023/0", Map("value" -> "100"), "/employer-contribution/2023/0")
-  val getEmployerContribution: ChainBuilder =
+  val getEmployerContribution: HttpRequestBuilder =
     get("/employer-contribution/2023/0")
-  val postEmployerContribution: ChainBuilder =
+  val postEmployerContribution: HttpRequestBuilder =
     post("/employer-contribution/2023/0", Map("value" -> "true"), "/expenses-employer-paid/2023/0")
-  val getExpensesEmployerPaid: ChainBuilder =
+  val getExpensesEmployerPaid: HttpRequestBuilder =
     get("/expenses-employer-paid/2023/0")
-  val postExpensesEmployerPaid: ChainBuilder =
+  val postExpensesEmployerPaid: HttpRequestBuilder =
     post("/expenses-employer-paid/2023/0", Map("value" -> "50"), "/summary-subscriptions")
-  val getCYA: ChainBuilder =
+  val getCYA: HttpRequestBuilder =
     get("/check-your-answers", false)
-  val getYourEmployer: ChainBuilder =
+  val getYourEmployer: HttpRequestBuilder =
     get("/your-employer")
-  val postYourEmployer: ChainBuilder =
+  val postYourEmployer: HttpRequestBuilder =
     post("/your-employer", Map("value" -> "true"), "/how-you-will-get-your-expenses")
-  val postYourAddress: ChainBuilder =
+  val postYourAddress: HttpRequestBuilder =
     post("/your-address", Map("value" -> "true"), "/check-your-answers")
-  val getHowYouWillGetYourExpensesPage: ChainBuilder =
+  val getHowYouWillGetYourExpensesPage: HttpRequestBuilder =
     get("/how-you-will-get-your-expenses", false)
-  val getSubmission: ChainBuilder =
+  val getSubmission: HttpRequestBuilder =
     get("submission")
 
-  val getYourAddress: ChainBuilder = {
-    exec(
+  val getYourAddress: HttpRequestBuilder = {
       http("[GET] - /your-address")
-        .get(s"$serviceUrl/your-address")
+        .get(s"$serviceUrl/professional-subscriptions/your-address")
         .disableFollowRedirect
         .check(status.is(303))
-    )
   }
 
-  private def get(path: String, expectCsrfToken: Boolean = true): ChainBuilder =
+  private def get(path: String, expectCsrfToken: Boolean = true): HttpRequestBuilder =
     if (expectCsrfToken) {
-      exec(
         http(s"[GET] - $path")
-          .get(s"$serviceUrl$path")
+          .get(s"$serviceUrl/professional-subscriptions/$path")
           .check(saveCsrfToken)
           .disableFollowRedirect
           .check(status.is(200))
-      )
     } else {
-      exec(
         http(s"[GET] - $path")
-          .get(s"$serviceUrl$path")
+          .get(s"$serviceUrl/professional-subscriptions/$path")
           .disableFollowRedirect
           .check(status.is(200))
-      )
     }
 
-  private def post(path: String, data: Map[String, String], redirectToPage: String): ChainBuilder =
-    exec(
+  private def post(path: String, data: Map[String, String], redirectToPage: String): HttpRequestBuilder =
       http(s"[POST] - $path")
-        .post(s"$serviceUrl$path")
+        .post(s"$serviceUrl/professional-subscriptions/$path")
         .formParamMap(data)
         .formParam("csrfToken", f"$${csrfToken}")
         .disableFollowRedirect
         .check(status.is(303))
         .check(header("location").is(s"/professional-subscriptions$redirectToPage"))
-    )
 }
