@@ -1,8 +1,22 @@
+val appName = "professional-subscriptions-performance-tests"
+val appVersion = "0.1.0-SNAPSHOT"
 
-lazy val root = (project in file("."))
+lazy val root = Project(appName, file("."))
   .enablePlugins(GatlingPlugin)
+  .enablePlugins(CorePlugin)
+  .enablePlugins(JvmPlugin)
+  .enablePlugins(IvyPlugin)
+  .enablePlugins(SbtAutoBuildPlugin)
   .settings(
+    organization := "uk.gov.hmrc",
+    name := appName,
+    version := appVersion,
     libraryDependencies ++= Dependencies.compile,
-    scalaVersion := "2.12.4",
-    fork in Test := true
+    scalaVersion := "2.12.13",
+    scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
+    retrieveManaged := true,
+    initialCommands in console := "import uk.gov.hmrc._",
+    parallelExecution in Test := false,
+    publishArtifact in Test := true,
+    testOptions in Test := Seq.empty
   )
