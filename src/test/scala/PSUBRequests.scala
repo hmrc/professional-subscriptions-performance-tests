@@ -18,11 +18,13 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
+import uk.gov.hmrc.time.TaxYear
 
 object PSUBRequests extends CsrfHelper with ServicesConfiguration {
 
   val serviceUrl: String = baseUrlFor("professional-subscriptions-frontend")
   val authUrl: String = baseUrlFor("auth-login-stub")
+  val currentTaxYear: String = TaxYear.current.startYear.toString
 
   val getAuthLoginStub: HttpRequestBuilder =
       http("[GET] - /auth-login-stub/gg-sign-in")
@@ -35,7 +37,7 @@ object PSUBRequests extends CsrfHelper with ServicesConfiguration {
         .formParam("authorityId", "")
         .formParam("gatewayToken", "")
         .formParam("redirectionUrl", s"$serviceUrl/professional-subscriptions")
-        .formParam("credentialStrength", "weak")
+        .formParam("credentialStrength", "strong")
         .formParam("confidenceLevel", "200")
         .formParam("affinityGroup", "Individual")
         .formParam("nino", nino)
@@ -60,21 +62,21 @@ object PSUBRequests extends CsrfHelper with ServicesConfiguration {
   val getSummarySubscriptions: HttpRequestBuilder =
     get("/summary-subscriptions", false)
   val getWhicSubscription: HttpRequestBuilder =
-    get("/which-subscription-are-you-claiming-for/2023/0")
+    get("/which-subscription-are-you-claiming-for/" + currentTaxYear + "/0")
   val postWhicSubscription: HttpRequestBuilder =
-    post("/which-subscription-are-you-claiming-for/2023/0", Map("subscription" -> "100 Women in Finance Association"), "/subscription-amount/2023/0")
+    post("/which-subscription-are-you-claiming-for/" + currentTaxYear + "/0", Map("subscription" -> "100 Women in Finance Association"), "/subscription-amount/" + currentTaxYear + "/0")
   val getSubscriptionAmount: HttpRequestBuilder =
-    get("/subscription-amount/2023/0")
+    get("/subscription-amount/" + currentTaxYear + "/0")
   val postSubscriptionAmount: HttpRequestBuilder =
-    post("/subscription-amount/2023/0", Map("value" -> "100"), "/employer-contribution/2023/0")
+    post("/subscription-amount/" + currentTaxYear + "/0", Map("value" -> "100"), "/employer-contribution/" + currentTaxYear + "/0")
   val getEmployerContribution: HttpRequestBuilder =
-    get("/employer-contribution/2023/0")
+    get("/employer-contribution/" + currentTaxYear + "/0")
   val postEmployerContribution: HttpRequestBuilder =
-    post("/employer-contribution/2023/0", Map("value" -> "true"), "/expenses-employer-paid/2023/0")
+    post("/employer-contribution/" + currentTaxYear + "/0", Map("value" -> "true"), "/expenses-employer-paid/" + currentTaxYear + "/0")
   val getExpensesEmployerPaid: HttpRequestBuilder =
-    get("/expenses-employer-paid/2023/0")
+    get("/expenses-employer-paid/" + currentTaxYear + "/0")
   val postExpensesEmployerPaid: HttpRequestBuilder =
-    post("/expenses-employer-paid/2023/0", Map("value" -> "50"), "/summary-subscriptions")
+    post("/expenses-employer-paid/" + currentTaxYear + "/0", Map("value" -> "50"), "/summary-subscriptions")
   val getCYA: HttpRequestBuilder =
     get("/check-your-answers", false)
   val getYourEmployer: HttpRequestBuilder =
