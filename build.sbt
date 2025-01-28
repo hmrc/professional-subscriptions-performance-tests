@@ -6,7 +6,6 @@ lazy val root = Project(appName, file("."))
   .enablePlugins(CorePlugin)
   .enablePlugins(JvmPlugin)
   .enablePlugins(IvyPlugin)
-  .enablePlugins(SbtAutoBuildPlugin)
   .settings(
     organization := "uk.gov.hmrc",
     name := appName,
