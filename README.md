@@ -7,8 +7,8 @@ Professional Subscriptions Performance Tests
 
 To start all dependencies and services for professional subscriptions, use one of the following commands:
 ```
-sm --start EE_ALL -r
-sm --start EE_DEP -r (starts only dependencies).
+sm2 --start EE_ALL
+sm2 --start EE_DEP (starts only dependencies).
 ```
 
 ### Running locally
