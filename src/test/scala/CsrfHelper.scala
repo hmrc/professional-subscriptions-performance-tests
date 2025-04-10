@@ -20,7 +20,7 @@ trait CsrfHelper {
 
   val CsrfPattern = """<input type="hidden" name="csrfToken" value="([^"]+)""""
 
-  def saveCsrfToken = {
+  def saveCsrfToken =
     regex(_ => CsrfPattern).saveAs("csrfToken")
-  }
+
 }
