@@ -19,42 +19,30 @@ import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 
 class PSUBSimulation extends PerformanceTestRunner {
 
-  setup("Professional-Subscriptions-Journey", "Professional-Subscriptions-Journey") withRequests(
+  setup("Professional-Subscriptions-Journey", "Professional-Subscriptions-Journey").withRequests(
     getAuthLoginStub,
     postAuthLoginStub("AB216913B"),
     getIndex,
     getWhichTaxYear,
     postWhichTaxYear,
-
     getAlreadyInTaxCode,
     postAlreadyInTaxCode,
-
     getReEnterAmounts,
     postReEnterAmounts,
-
     getSummarySubscriptions,
-
     getWhicSubscription,
     postWhicSubscription,
-
     getSubscriptionAmount,
     postSubscriptionAmount,
-
     getEmployerContribution,
     postEmployerContribution,
-
     getExpensesEmployerPaid,
     postExpensesEmployerPaid,
-
     getSummarySubscriptions,
-
     getYourAddress,
-
     getCYA,
-
     getYourEmployer,
     postYourEmployer,
-
     getHowYouWillGetYourExpensesPage
   )
 
