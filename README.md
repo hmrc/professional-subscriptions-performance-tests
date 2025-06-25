@@ -15,27 +15,27 @@ sm2 --start EE_DEP (starts only dependencies).
 
 To run the smoke test
 ```
-sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
+sbt -Dperftest.runSmokeTest=true -DrunLocal=true Gatling/test
 ```
 It might be best running the smoke tests before your full suite.
 These tests only use one user to check the journey is complete and working.
 
 To run the full test
 ```
-sbt -DrunLocal=true gatling:test
+sbt -DrunLocal=true Gatling/test
 ```
 
 ### Running in Staging
 To run the smoke test
 ```
-sbt -Dperftest.runSmokeTest=true gatling:test
+sbt -Dperftest.runSmokeTest=true Gatling/test
 ```
 It might be best running the smoke tests before your full suite.
 These tests only use one user to check the journey is complete and working.
 
 To run the full test
 ```
-sbt gatling:test
+sbt Gatling/test
 ```
 ### License
 
