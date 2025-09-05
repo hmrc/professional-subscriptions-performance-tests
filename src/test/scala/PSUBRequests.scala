@@ -147,7 +147,7 @@ object PSUBRequests extends CsrfHelper with ServicesConfiguration {
     http(s"[POST] - $path")
       .post(s"$serviceUrl/professional-subscriptions/$path")
       .formParamMap(data)
-      .formParam("csrfToken", f"$${csrfToken}")
+      .formParam("csrfToken", f"#{csrfToken}")
       .disableFollowRedirect
       .check(status.is(303))
       .check(header("location").is(s"/professional-subscriptions$redirectToPage"))
