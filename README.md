@@ -22,7 +22,7 @@ These tests only use one user to check the journey is complete and working.
 
 To run the full test
 ```
-sbt -DrunLocal=true Gatling/test
+sbt -Dperftest.runSmokeTest=false -DrunLocal=true Gatling/test
 ```
 
 ### Running in Staging
