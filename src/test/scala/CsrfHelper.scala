@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-import io.gatling.core.Predef._
+import io.gatling.core.Predef.*
+import io.gatling.core.session.{Expression, StaticValueExpression}
+import io.gatling.core.session.el.*
 
 trait CsrfHelper {
 
   val CsrfPattern = """<input type="hidden" name="csrfToken" value="([^"]+)""""
+
+  val csrfToken: Expression[Any] = "#{csrfToken}".el[Any]
+
+  given [T]: Conversion[T, Expression[T]] = (value: T) => StaticValueExpression(value)
 
   def saveCsrfToken =
     regex(_ => CsrfPattern).saveAs("csrfToken")
