@@ -22,7 +22,7 @@ trait CsrfHelper {
 
   val CsrfPattern = """<input type="hidden" name="csrfToken" value="([^"]+)""""
 
-  val csrfToken: Expression[Any] = "#{csrfToken}".el[Any]
+  val csrfToken: Expression[String] = "#{csrfToken}".el[String]
 
   given [T]: Conversion[T, Expression[T]] = (value: T) => StaticValueExpression(value)
 
