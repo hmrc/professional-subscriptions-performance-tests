@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import io.gatling.core.Predef._
-import io.gatling.http.Predef._
+import io.gatling.core.Predef.*
+import io.gatling.http.Predef.*
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.time.TaxYear
@@ -144,12 +144,21 @@ object PSUBRequests extends CsrfHelper with ServicesConfiguration {
     }
 
   private def post(path: String, data: Map[String, String], redirectToPage: String): HttpRequestBuilder =
-    http(s"[POST] - $path")
+    val request = http(s"[POST] - $path")
       .post(s"$serviceUrl/professional-subscriptions/$path")
-      .formParamMap(data)
-      .formParam("csrfToken", f"#{csrfToken}")
+
+    addFormParams(request, data)
+      .formParam("csrfToken", csrfToken)
       .disableFollowRedirect
       .check(status.is(303))
       .check(header("location").is(s"/professional-subscriptions$redirectToPage"))
+
+  private def addFormParams(
+      request: HttpRequestBuilder,
+      data: Map[String, String]
+  ): HttpRequestBuilder =
+    data.foldLeft(request) { case (requestWithParams, (key, value)) =>
+      requestWithParams.formParam(key, value)
+    }
 
 }

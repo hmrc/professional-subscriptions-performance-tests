@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import PSUBRequests._
+import PSUBRequests.*
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 
 class PSUBSimulation extends PerformanceTestRunner {

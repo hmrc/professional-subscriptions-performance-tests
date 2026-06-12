@@ -11,11 +11,11 @@ lazy val root = Project(appName, file("."))
     name         := appName,
     version      := appVersion,
     libraryDependencies ++= Dependencies.compile,
-    scalaVersion := "2.13.16",
-    scalacOptions ++= Seq("-feature", "-language:implicitConversions", "-language:postfixOps"),
+    scalaVersion := "3.3.7",
+    scalacOptions ++= Seq("-feature", "-language:implicitConversions"),
     retrieveManaged            := true,
-    initialCommands in console := "import uk.gov.hmrc._",
-    parallelExecution in Test  := false,
-    publishArtifact in Test    := true,
-    testOptions in Test        := Seq.empty
+    console / initialCommands  := "import uk.gov.hmrc.*",
+    Test / parallelExecution  := false,
+    Test / publishArtifact    := true,
+    Test / testOptions        := Seq.empty
   )
